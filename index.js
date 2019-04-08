@@ -7,9 +7,9 @@ class Quiz{
     this.score = 0;
     this.scoreHistory = [];
     this.active = false;
+    this.checkValue = null
+
   }
-
-
 
   toggleActive() {
     this.active = !this.active;
@@ -23,39 +23,41 @@ class Quiz{
     //something something TriviaAPI
   }
 
+  getUnaskedQuestions(){
+    const questions = TriviaAPI.getQuestions;
+    this.unasked.push(questions);
+    }
 
   questionController(){
-    
+    toggleActive()
     while (this.unasked.length !== 0){
     askQuestion()
-    checkAnswer()
-
+    promptUser()
+    this.checkValue = checkAnswer(currentQuestion.userAnswer);
     }
+    toggleActive()
   }
 
+  promptUser(){
+    currentQuestion.userAnswer = prompt('Your answer?' 0);
+  }  
   askQuestion(){
     //CHANGE FOR RENDER
     let currentQuestion = this.unasked.pop();
     let answerChoices = [...currentQuestion.answers, currentQuestion.correctAnswer];
     console.log(currentQuestion.text);
     console.log(answerChoices);
-    let answer = prompt('Your answer?' 0);
-    checkAnswer(currentQuestion, answer)
-    askQuestion();
+    
   }
 
-  checkAnswer(answer){
-    let shortCheck = currentQuestion.answerStatus;
-    if (shortCheck(answer) ===1){
+  logQuizResponse(answer){
+    if (this.checkValue ===1){
       console.log('You are Correct')
       changeScore();
-    } else if(shortCheck(answer)===0){
+    } else if(this.checkValue ===0){
       console.log('YOU ARE SO WRONG!')
     } else console.log('Skipped');
   }
-
-
-
 
   reset(){
     this.asked=[];
