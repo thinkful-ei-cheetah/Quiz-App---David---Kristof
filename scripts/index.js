@@ -68,10 +68,10 @@ class Quiz{
 
 
 class Question{
-  constructor(text, answers, correctAnswer, userAnswer){
-    this.text = '';
-    this.answers = [];
-    this.correctAnswer = '';
+  constructor(text, incorrect_answers, correct_answer){
+    this.text = text;
+    this.incorrectAnswers = incorrect_answers;
+    this.correctAnswer = correct_answer;
     this.userAnswer = '';
   }
   submitAnswer(answer){
@@ -88,4 +88,52 @@ class Question{
       return -1;
     }
   }
+}
+
+
+
+
+
+
+
+
+
+
+
+class TriviaApi {
+constructor(){
+  this.allQuestions = [];
+}
+
+  errorHandler(response) {
+    let error;
+    if (!response.ok) {
+      error.status = response.status;
+      if (response.headers.get('Content-Type').includes('json')) {
+        error.message = response.statusText;
+        return Promise.reject(error);
+      }
+    }
+    if (error) {
+      error.message = response.message;
+      return Promise.reject(error);
+    }
+    return response.json();
+  }
+
+  api() {
+    console.log('hello');
+    const BASE_URL = 'https://opentdb.com/api.php?amount=5';
+
+    // function getQuestion() {
+  
+  fetch(`${BASE_URL}`)
+      .then(this.errorHandler)
+      .then(res => res.results.forEach(question => {
+        this.allQuestions.push( new Question(question.question, question.incorrect_answers, question.correct_answer));
+      }))
+      .catch(e => console.log(e.message));
+    // }
+  }
+
 }
