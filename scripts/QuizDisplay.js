@@ -34,7 +34,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
         ${questionObj.text}
       </div>
          <form>
-        <input type="radio" role="button" class="js-answer" name="answerOption" id="answerOption1"/>
+        <input checked type="radio" role="button" class="js-answer" name="answerOption" id="answerOption1"/>
         <label for="answerOption1" title="text">${questionObj.ansChoices[0]}</label>
         <input type="radio" role="button" class="js-answer" name="answerOption" id="answerOption2"/>
         <label for="answerOption2" title="text">${questionObj.ansChoices[1]}</label>
@@ -49,12 +49,15 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
           ${questionObj.text}
         </div>
            <form>
-          <input type="radio" role="button" class="js-answer" name="answerOption" id="answerOption1"/>
+          <input checked type="radio" role="button" class="js-answer" name="answerOption" id="answerOption1"/>
           <label for="answerOption1" title="text">${questionObj.ansChoices[0]}</label>
+          <br>
           <input type="radio" role="button" class="js-answer" name="answerOption" id="answerOption2"/>
           <label for="answerOption2" title="text">${questionObj.ansChoices[1]}</label>
+          <br>
           <input type="radio" role="button" class="js-answer" name="answerOption" id="answerOption3"/>
           <label for="answerOption3" title="text">${questionObj.ansChoices[2]}</label>
+          <br>
           <input type="radio" role="button" class="js-answer" name="answerOption" id="answerOption4"/>
           <label for="answerOption4" title="text">${questionObj.ansChoices[3]}</label>
         <div>
@@ -113,6 +116,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
     </div>
     <div>
     Your final score was ${finalObj.score} out of 5!
+    <br>
     That's a new high score!
     <div>
       <button class='playAgain'>Play Again</button>
@@ -125,6 +129,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
     </div>
     <div>
     Your final score was ${finalObj.score} out of 5!
+    <br>
     Your current high score is ${finalObj.highScore}!
     </div>
     <div>

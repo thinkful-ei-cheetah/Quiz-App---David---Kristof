@@ -19,10 +19,11 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
     this.questions = [{ id: 1, text: 'Question 1' }];
     this.unasked = [];
     this.asked = [];
-    this.scoreHistory = [];
-    this.score = null;
+    this.highScore = 0;
+    this.score = 0;
     this.currentState = 0;
     this.currentGrade = null;
+    this.currentQuestionNum = 'inactive';
   }
 
 
@@ -41,6 +42,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
       .then(questions => {
         questions.results.forEach((item,index) => {
           this.unasked.push(new Question(item.question, item.incorrect_answers, item.correct_answer, index+1));
+          console.log(this.unasked);
         });
       })
       .then(() => {
@@ -53,7 +55,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
   askNextQuestion(){
     //CHANGE FOR RENDER
     let currentQuestion = this.unasked[0];
-
+    this.currentQuestionNum = currentQuestion.id;
     let answerChoices = [...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer];
 
     function shuffle(a) {
@@ -88,15 +90,14 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
   }
 
   getFinalScore(){
-    this.scoreHistory.push(this.score);
-    const highScore= Math.max(...this.scoreHistory);
+    this.highScore = this.score > this.highScore ? this.score : this.highScore;
     this.toggleActive();
-
+    this.currentQuestionNum = 'inactive';
 
     return{
-      thisHighest: this.score > highScore ? true : false,
+      thisHighest: this.score > this.highScore ? true : false,
       score: this.score,
-      highScore,
+      highScore: this.highScore,
     };
   }
 
@@ -203,11 +204,12 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
 
 
 class Question {
-  constructor(text, incorrect_answers, correct_answer) {
+  constructor(text, incorrect_answers, correct_answer, id) {
     this.text = text;
     this.incorrectAnswers = incorrect_answers;
     this.correctAnswer = correct_answer;
     this.userAnswer = '';
+    this.id = id;
   }
  
   answerStatus() {
