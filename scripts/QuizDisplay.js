@@ -43,6 +43,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
     `;
   }
 
+
   template() {
     if (this.model.active) {
       return this._generateQuestion();
