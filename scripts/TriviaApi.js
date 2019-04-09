@@ -21,7 +21,6 @@ class TriviaAPI {
   }
 
   static getQuestions() {
-
     const BASE_URL = 'https://opentdb.com/api.php?amount=5';
 
     return fetch(`${BASE_URL}`)

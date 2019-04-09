@@ -21,17 +21,18 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
     `;
   }
 
-  _generateQuestion() {
+  _generateQuestion(questionObj) {
+    console.log(questionObj);
     return `
       <div>
-        ${this.model.questions[0].text}
+        ${questionObj}
       </div>
     `;
   }
 
   template() {
     if (this.model.active) {
-      return this._generateQuestion();
+      return this._generateQuestion(this.model.askNextQuestion());
     } else {
       return this._generateIntro();
     }

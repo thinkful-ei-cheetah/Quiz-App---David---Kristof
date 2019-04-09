@@ -10,61 +10,38 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
 
   // This class property could be used to determine the no. of quiz questions
   // In later implementations, the user could provide a quiz length and override
-  static DEFAULT_QUIZ_LENGTH = 5;
+ // static DEFAULT_QUIZ_LENGTH = 5;
 
   constructor() {
     super();
-
     // Your Quiz model's constructor logic should go here. There is just examples below.
     this.active = false;
     this.questions = [{ id: 1, text: 'Question 1' }];
   }
 
   startNewGame() {
-    this.active = true;
+    this.quizInitialize();
   }
 
-}
-
-
-
-class Quiz {
-  constructor() {
-    this.unasked = [];
-    this.asked = [];
-    this.score = 0;
-    this.scoreHistory = [];
-    this.active = false;
-    this.checkValue = null;
-
+  quizInitialize() {
+    try {
+      this.toggleActive();
+      this.getUnaskedQuestions();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   toggleActive() {
     this.active = !this.active;
   }
 
-  changeScore() {
-    this.score++;
-  }
-
-  getQuestions() {
-    //something something TriviaAPI
-  }
-
-  quizInitialize() {
-    try {
-      this.getUnaskedQuestions();
-      this.toggleActive();
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   getUnaskedQuestions() {
     return TriviaAPI.getQuestions()
       .then(questions => {
-        questions.results.forEach(item => {
-          this.unasked.push(new Question(item.question, item.incorrect_answers, item.correct_answer));
+        console.log(questions)
+        questions.results.forEach((item,index) => {
+          this.unasked.push(new Question(item.question, item.incorrect_answers, item.correct_answer, index+1));
         });
       })
       .then(() => {
@@ -74,24 +51,15 @@ class Quiz {
     //this.unasked.push(...questions);
   }
 
-
   questionController() {
     while (this.unasked.length !== 0) {
-      this.askQuestion();
+      this.askNextQuestion();
       this.promptUser();
     }
     this.toggleActive();
   }
 
-  promptUser() {
-    let chosenQuestion = this.asked[0];
-    //HARD CODED
-    chosenQuestion.userAnswer = chosenQuestion.incorrectAnswers[1];
-
-    this.logQuizResponse(chosenQuestion.answerStatus());
-    //console.log(this.asked[0])
-  }
-  askQuestion() {
+  askNextQuestion(){
     //CHANGE FOR RENDER
     let currentQuestion = this.unasked.pop();
 
@@ -106,28 +74,117 @@ class Quiz {
     }
 
     answerChoices = shuffle(answerChoices);
-
-    console.log(currentQuestion.text);
-    console.log(answerChoices);
-
     this.asked.push(currentQuestion);
-  }
 
-  logQuizResponse(checkValue) {
-    if (checkValue === 1) {
-      console.log('You are Correct');
-      changeScore();
-    } else if (checkValue === 0) {
-      console.log('YOU ARE SO WRONG!');
-    } else console.log('Skipped');
-  }
-
-  reset() {
-    this.asked = [];
-    this.score = 0;
+    return{
+      text: currentQuestion.text,
+      ansChoices: answerChoices,
+      id: currentQuestion.Id,
+    }
   }
 
 }
+
+
+
+// class Quiz {
+//   constructor() {
+//     this.unasked = [];
+//     this.asked = [];
+//     this.score = 0;
+//     this.scoreHistory = [];
+//     this.active = false;
+//     this.checkValue = null;
+
+//   }
+
+//   toggleActive() {
+//     this.active = !this.active;
+//   }
+
+//   changeScore() {
+//     this.score++;
+//   }
+
+//   quizInitialize() {
+//     try {
+//       this.toggleActive();
+//       this.getUnaskedQuestions();
+//     } catch (e) {
+//       console.log(e);
+//     }
+//   }
+
+//   getUnaskedQuestions() {
+//     return TriviaAPI.getQuestions()
+//       .then(questions => {
+//         questions.results.forEach((item,index) => {
+//           this.unasked.push(new Question(item.question, item.incorrect_answers, item.correct_answer, index+1));
+//         });
+//       })
+//       .then(() => {
+//         this.questionController();
+//       });
+
+//     //this.unasked.push(...questions);
+//   }
+
+
+//   questionController() {
+//     while (this.unasked.length !== 0) {
+//       this.askQuestion();
+//       this.promptUser();
+//     }
+//     this.toggleActive();
+//   }
+
+//   // promptUser() {
+//   //   let chosenQuestion = this.asked[0];
+//   //   //HARD CODED
+//   //   chosenQuestion.userAnswer = chosenQuestion.incorrectAnswers[1];
+
+//   //   this.logQuizResponse(chosenQuestion.answerStatus());
+//     //console.log(this.asked[0])
+  
+//   askNextQuestion(){
+//     //CHANGE FOR RENDER
+//     let currentQuestion = this.unasked.pop();
+
+//     let answerChoices = [...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer];
+
+//     function shuffle(a) {
+//       for (let i = a.length - 1; i > 0; i--) {
+//         const j = Math.floor(Math.random() * (i + 1));
+//         [a[i], a[j]] = [a[j], a[i]];
+//       }
+//       return a;
+//     }
+
+//     answerChoices = shuffle(answerChoices);
+//     this.asked.push(currentQuestion);
+
+//     return{
+//       text: currentQuestion.text,
+//       ansChoices: answerChoices,
+//       id: currentQuestion.Id,
+//     }
+//   }
+
+//   logQuizResponse(checkValue) {
+//     if (checkValue === 1) {
+//       console.log('You are Correct');
+//       changeScore();
+//     } else if (checkValue === 0) {
+//       console.log('YOU ARE SO WRONG!');
+//     } else console.log('Skipped');
+//   }
+
+//   reset() {
+//     this.asked = [];
+//     this.score = 0;
+//   }
+
+// }
 
 
 class Question {
@@ -153,6 +210,6 @@ class Question {
   }
 }
 
-let x = new Quiz();
+// let x = new Quiz();
 
-x.quizInitialize();
+// x.quizInitialize();
