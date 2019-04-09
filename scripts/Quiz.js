@@ -1,4 +1,4 @@
-/* global Model */
+/* global Model, TriviaAPI */
 'use strict';
 
 /**
@@ -10,7 +10,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
 
   // This class property could be used to determine the no. of quiz questions
   // In later implementations, the user could provide a quiz length and override
- // static DEFAULT_QUIZ_LENGTH = 5;
+  // static DEFAULT_QUIZ_LENGTH = 5;
 
   constructor() {
     super();
@@ -19,6 +19,9 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
     this.questions = [{ id: 1, text: 'Question 1' }];
     this.unasked = [];
     this.asked = [];
+    this.scoreHistory = [];
+    this.score = null;
+    this.currentGrade = {};
   }
 
 
@@ -41,7 +44,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
       })
       .then(() => {
         this.update();
-      })
+      });
 
     //this.unasked.push(...questions);
   }
@@ -56,7 +59,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
 
   askNextQuestion(){
     //CHANGE FOR RENDER
-    let currentQuestion = this.unasked.pop();
+    let currentQuestion = this.unasked[0];
 
     let answerChoices = [...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer];
 
@@ -69,16 +72,29 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
     }
 
     answerChoices = shuffle(answerChoices);
-    this.asked.push(currentQuestion);
 
     return{
       text: currentQuestion.text,
       ansChoices: answerChoices,
-      id: currentQuestion.Id,
+      id: currentQuestion.id,
     };
   }
 
+  checkAnswer(value){
+    this.asked.unshift(this.unasked.shift());
+    this.asked[0].userAnswer = value;
+    if (this.asked[0].answerStatus()) this.score++;
+
+    this.currentGrade = {
+      text: this.asked[0].text,
+      correct: this.asked[0].answerStatus(),
+      correctAns: this.asked[0].correctAnswer,
+      userAns: value
+    };
+  }
 }
+
+
 
 
 
@@ -165,15 +181,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
 //     }
 //   }
 
-//   logQuizResponse(checkValue) {
-//     if (checkValue === 1) {
-//       console.log('You are Correct');
-//       changeScore();
-//     } else if (checkValue === 0) {
-//       console.log('YOU ARE SO WRONG!');
-//     } else console.log('Skipped');
-//   }
-
+//  
 //   reset() {
 //     this.asked = [];
 //     this.score = 0;
@@ -198,9 +206,6 @@ class Question {
     }
     else if (this.userAnswer === this.correctAnswer) {
       return 1;
-    }
-    else {
-      return -1;
     }
   }
 }
