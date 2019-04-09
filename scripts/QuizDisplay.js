@@ -31,14 +31,14 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
         ${questionObj.text}
       </div>
          <form>
-        <input type="radio" role="button" class="js-answer" name="answerOption1"/>
-        <label for="answerOption1" title="text">${questionObj.ansChoices[0]}</label>
-        <input type="radio" role="button" class="js-answer" name="answerOption2"/>
-        <label for="answerOption2" title="text">${questionObj.ansChoices[1]}</label>
-        <input type="radio" role="button" class="js-answer" name="answerOption3"/>
-        <label for="answerOption3" title="text">${questionObj.ansChoices[2]}</label>
-        <input type="radio" role="button" class="js-answer" name="answerOption4"/>
-        <label for="answerOption4" title="text">${questionObj.ansChoices[3]}</label>
+        <input type="radio" role="button" class="js-answer" name="answerOption"/>
+        <label for="answerOption" title="text">${questionObj.ansChoices[0]}</label>
+        <input type="radio" role="button" class="js-answer" name="answerOption"/>
+        <label for="answerOption" title="text">${questionObj.ansChoices[1]}</label>
+        <input type="radio" role="button" class="js-answer" name="answerOption"/>
+        <label for="answerOption" title="text">${questionObj.ansChoices[2]}</label>
+        <input type="radio" role="button" class="js-answer" name="answerOption"/>
+        <label for="answerOption" title="text">${questionObj.ansChoices[3]}</label>
       <div>
       <button class='next'>Submit</button>
       </div> 
@@ -58,6 +58,9 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
       The correct answer was:
       ${gradedObj.correctAns}
       </div>
+      <div>
+      <button class='continue'>Continue</button>
+      </div> 
 `;
     }
     else {
@@ -75,6 +78,9 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
       The correct answer was:
       ${gradedObj.correctAns}
       </div>
+      <div>
+      <button class='continue'>Continue</button>
+      </div> 
       `;
     }
   }
@@ -88,6 +94,9 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
     <div>
     Your final score was ${finalObj.score} out of 5!
     That's a new high score!
+    <div>
+      <button class='playAgain'>Play Again</button>
+    </div> 
     `;
     } else {
     return `
@@ -97,6 +106,9 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
     <div>
     Your final score was ${finalObj.score} out of 5!
     </div>
+    <div>
+      <button class='playAgain'>Play Again</button>
+    </div> 
     `;
   }
 
