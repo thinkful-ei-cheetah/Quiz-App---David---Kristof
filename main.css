@@ -3,15 +3,27 @@
 }
 
 main{
+  margin: 0 auto;
   max-width: 800px;
   border: 1px solid black;
   border-radius: 5px;
 }
 
 .status{
+  font-size: 20px;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
 }
 
 .display{
+  margin-top: 20px;
   width: 100%;
+}
+
+.quiz-container{
+  width: 400px;
+  margin: 0 auto;
+  border: 1px solid black;
 }
