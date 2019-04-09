@@ -102,15 +102,15 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   }
 
   template() {
-    if (this.model.active) {
-
-      if (this.model.asked.length!== 0){
-        return this._generateGraded(this.model.currentGrade);
-      }
-
-      return this._generateQuestion(this.model.askNextQuestion());
-    } else {
+    switch(this.model.currentState){
+    case 0:
       return this._generateIntro();
+    case 1: 
+      return this._generateQuestion(this.model.askNextQuestion());
+    case 2: {
+      this.model.currentState = 1;
+      return this._generateGraded(this.model.currentGrade);
+    }
     }
   }
 
@@ -124,8 +124,5 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
     const text = $('input:checked + label').text();
     this.model.checkAnswer(text);
     this.model.update();
-  }
-
-
- 
+  } 
 }

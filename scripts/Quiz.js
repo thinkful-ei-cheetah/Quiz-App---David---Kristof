@@ -21,7 +21,8 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
     this.asked = [];
     this.scoreHistory = [];
     this.score = null;
-    this.currentGrade = {};
+    this.currentState = 0;
+    this.currentGrade = null;
   }
 
 
@@ -43,6 +44,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
         });
       })
       .then(() => {
+        this.currentState = 1;
         this.update();
       });
 
@@ -70,7 +72,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
       }
       return a;
     }
-
+    this.currentState = 1;
     answerChoices = shuffle(answerChoices);
 
     return{
@@ -91,6 +93,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
       correctAns: this.asked[0].correctAnswer,
       userAns: value
     };
+    this.currentState = 2;
   }
 }
 
