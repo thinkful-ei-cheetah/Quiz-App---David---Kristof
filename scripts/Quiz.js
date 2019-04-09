@@ -1,4 +1,4 @@
-/* global Model */
+/* global Model, TriviaAPI */
 'use strict';
 
 /**
@@ -10,7 +10,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
 
   // This class property could be used to determine the no. of quiz questions
   // In later implementations, the user could provide a quiz length and override
- // static DEFAULT_QUIZ_LENGTH = 5;
+  // static DEFAULT_QUIZ_LENGTH = 5;
 
   constructor() {
     super();
@@ -19,6 +19,9 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
     this.questions = [{ id: 1, text: 'Question 1' }];
     this.unasked = [];
     this.asked = [];
+    this.scoreHistory = [];
+    this.score = null;
+    this.currentGrade = {};
   }
 
 
@@ -41,7 +44,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
       })
       .then(() => {
         this.update();
-      })
+      });
 
     //this.unasked.push(...questions);
   }
@@ -80,15 +83,15 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
   checkAnswer(value){
     this.asked.unshift(this.unasked.shift());
     this.asked[0].userAnswer = value;
-    return {
+    if (this.asked[0].answerStatus()) this.score++;
+
+    this.currentGrade = {
+      text: this.asked[0].text,
       correct: this.asked[0].answerStatus(),
       correctAns: this.asked[0].correctAnswer,
       userAns: value
     };
-
-
   }
-
 }
 
 

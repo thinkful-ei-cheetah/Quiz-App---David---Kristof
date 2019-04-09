@@ -31,13 +31,13 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
         ${questionObj.text}
       </div>
          <form>
-        <input type="radio" role="button" class="js-answer" name="answerOption1"/>
+        <input type="radio" role="button" class="js-answer" name="answerOption"/>
         <label for="answerOption1" title="text">${questionObj.ansChoices[0]}</label>
-        <input type="radio" role="button" class="js-answer" name="answerOption2"/>
+        <input type="radio" role="button" class="js-answer" name="answerOption"/>
         <label for="answerOption2" title="text">${questionObj.ansChoices[1]}</label>
-        <input type="radio" role="button" class="js-answer" name="answerOption3"/>
+        <input type="radio" role="button" class="js-answer" name="answerOption"/>
         <label for="answerOption3" title="text">${questionObj.ansChoices[2]}</label>
-        <input type="radio" role="button" class="js-answer" name="answerOption4"/>
+        <input type="radio" role="button" class="js-answer" name="answerOption"/>
         <label for="answerOption4" title="text">${questionObj.ansChoices[3]}</label>
       <div>
       <button class='next'>Submit</button>
@@ -58,7 +58,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
       The correct answer was:
       ${gradedObj.correctAns}
       </div>
-`;
+      `;
     }
     else {
       return `
@@ -80,33 +80,32 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   }
 
   _generateFinal(finalObj){
-    if (){
+    if (true){
       return `
-    <div>
-    Good job!
-    </div>
-    <div>
-    Your final score was ${finalObj.score} out of 5!
-    That's a new high score!
-    `;
+      <div>
+      Good job!
+      </div>
+      <div>
+      Your final score was ${finalObj.score} out of 5!
+      That's a new high score!
+      `;
     } else {
-    return `
-    <div>
-    Good job!
-    </div>
-    <div>
-    Your final score was ${finalObj.score} out of 5!
-    </div>
-    `;
+      return `
+      <div>
+      Good job!
+      </div>
+      <div>
+      Your final score was ${finalObj.score} out of 5!
+      </div>
+      `;
+    }
   }
-
-
 
   template() {
     if (this.model.active) {
 
       if (this.model.asked.length!== 0){
-        return this._generateGraded(this.model.checkAnswer());
+        return this._generateGraded(this.model.currentGrade);
       }
 
       return this._generateQuestion(this.model.askNextQuestion());
@@ -123,6 +122,10 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   handleSubmit(e){
     e.preventDefault();
     const text = $('input:checked + label').text();
+    this.model.checkAnswer(text);
     this.model.update();
   }
+
+
+ 
 }
