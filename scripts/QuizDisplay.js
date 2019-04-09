@@ -1,4 +1,4 @@
-/* global Renderer */
+/* global Renderer, $ */
 'use strict';
 
 class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
@@ -48,6 +48,11 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
 
   template() {
     if (this.model.active) {
+
+      if (this.model.asked.length!== 0){
+        return this._generateGraded(this.model.checkAnswer());
+      }
+
       return this._generateQuestion(this.model.askNextQuestion());
     } else {
       return this._generateIntro();
@@ -59,8 +64,9 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
 
   }
 
-  handleSubmit(){
-    this.model.checkAnswer();
+  handleSubmit(e){
+    e.preventDefault();
+    const text = $('input:checked + label').text();
     this.model.update();
   }
 }

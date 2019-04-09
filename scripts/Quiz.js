@@ -56,7 +56,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
 
   askNextQuestion(){
     //CHANGE FOR RENDER
-    let currentQuestion = this.unasked.pop();
+    let currentQuestion = this.unasked[0];
 
     let answerChoices = [...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer];
 
@@ -69,16 +69,29 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
     }
 
     answerChoices = shuffle(answerChoices);
-    this.asked.push(currentQuestion);
 
     return{
       text: currentQuestion.text,
       ansChoices: answerChoices,
-      id: currentQuestion.Id,
+      id: currentQuestion.id,
     };
   }
 
+  checkAnswer(value){
+    this.asked.unshift(this.unasked.shift());
+    this.asked[0].userAnswer = value;
+    return {
+      correct: this.asked[0].answerStatus(),
+      correctAns: this.asked[0].correctAnswer,
+      userAns: value
+    };
+
+
+  }
+
 }
+
+
 
 
 
@@ -165,15 +178,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
 //     }
 //   }
 
-//   logQuizResponse(checkValue) {
-//     if (checkValue === 1) {
-//       console.log('You are Correct');
-//       changeScore();
-//     } else if (checkValue === 0) {
-//       console.log('YOU ARE SO WRONG!');
-//     } else console.log('Skipped');
-//   }
-
+//  
 //   reset() {
 //     this.asked = [];
 //     this.score = 0;
@@ -198,9 +203,6 @@ class Question {
     }
     else if (this.userAnswer === this.correctAnswer) {
       return 1;
-    }
-    else {
-      return -1;
     }
   }
 }
