@@ -48,16 +48,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
         this.update();
       });
 
-    //this.unasked.push(...questions);
   }
-
-  // questionController() {
-  //   while (this.unasked.length !== 0) {
-  //    // this.askNextQuestion();
-  //     this.promptUser();
-  //   }
-  //   this.toggleActive();
-  // }
 
   askNextQuestion(){
     //CHANGE FOR RENDER
@@ -94,6 +85,24 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
       userAns: value
     };
     this.currentState = 2;
+  }
+
+  getFinalScore(){
+    this.scoreHistory.push(this.score);
+    const highScore= Math.max(...this.scoreHistory);
+    this.toggleActive();
+
+
+    return{
+      thisHighest: this.score > highScore ? true : false,
+      score: this.score,
+      highScore,
+    };
+  }
+
+  reset(){
+    this.score = 0;
+    this.asked= [];
   }
 }
 
@@ -200,9 +209,7 @@ class Question {
     this.correctAnswer = correct_answer;
     this.userAnswer = '';
   }
-  submitAnswer(answer) {
-    this.userAnswer = answer;
-  }
+ 
   answerStatus() {
     if (this.userAnswer !== this.correctAnswer) {
       return 0;

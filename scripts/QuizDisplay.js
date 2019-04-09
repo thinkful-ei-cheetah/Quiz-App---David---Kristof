@@ -106,7 +106,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   }
 
   _generateFinal(finalObj) {
-    if (finalObj) {
+    if (finalObj.thisHighest) {
       return `
     <div>
     Good job!
@@ -135,6 +135,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   }
 
   template() {
+    console.log('aa');
     switch(this.model.currentState){
     case 0:
       return this._generateIntro();
@@ -143,7 +144,12 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
     case 2: {
       this.model.currentState = 1;
       return this._generateGraded(this.model.currentGrade);
+    } 
+    case 3: {
+      return this._generateFinal(this.model.getFinalScore());
     }
+
+
     }
   }
 
@@ -159,11 +165,19 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   }
 
   handleContinue(){
-    // this.model.askNextQuestion();
+    if(this.model.unasked.length){
+      this.model.currentState = 1;
+      this.model.update();
+    } else{
+      this.model.currentState = 3;
+      this.model.update();
+    }
+        
     // this.model.update();
   }
 
   handlePlayAgain(){
+    this.model.reset();
     this.model.quizInitialize();
   }
 

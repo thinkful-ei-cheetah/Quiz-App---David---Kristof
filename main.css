@@ -1,0 +1,17 @@
+*{
+  box-sizing: border-box;
+}
+
+main{
+  max-width: 800px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.status{
+  width: 100%;
+}
+
+.display{
+  width: 100%;
+}
