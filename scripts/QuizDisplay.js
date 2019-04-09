@@ -5,6 +5,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   getEvents() {
     return {
       'click .start': 'handleStart',
+      'click .next': 
     };
   }
 
@@ -27,6 +28,19 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
       <div>
         ${questionObj}
       </div>
+         <form>
+        <input type="radio" role="button" class="js-answer" name="answerOption1"/>
+        <label for="answerOption1" title="text">           </label>
+        <input type="radio" role="button" class="js-answer" name="answerOption2"/>
+        <label for="answerOption2" title="text">           </label>
+        <input type="radio" role="button" class="js-answer" name="answerOption3"/>
+        <label for="answerOption3" title="text">           </label>
+        <input type="radio" role="button" class="js-answer" name="answerOption4"/>
+        <label for="answerOption4" title="text">           </label>
+      <div>
+      <button class='next'>Submit</button>
+      </div> 
+      </form>
     `;
   }
 
