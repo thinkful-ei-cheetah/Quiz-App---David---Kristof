@@ -5,7 +5,8 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   getEvents() {
     return {
       'click .start': 'handleStart',
-      'click .next': 
+      'click .next':  'handleSubmit',
+      
     };
   }
 
@@ -22,14 +23,16 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
     `;
   }
 
-  _generateQuestion() {
+  _generateQuestion(questionObj) {
+
+    console.log(questionObj);
     return `
       <div>
-        ${this.model.questions[0].text}
+        ${questionObj}
       </div>
          <form>
         <input type="radio" role="button" class="js-answer" name="answerOption1"/>
-        <label for="answerOption1" title="text">           </label>
+        <label for="answerOption1" title="text">${questionObj.question}</label>
         <input type="radio" role="button" class="js-answer" name="answerOption2"/>
         <label for="answerOption2" title="text">           </label>
         <input type="radio" role="button" class="js-answer" name="answerOption3"/>
@@ -46,14 +49,19 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
 
   template() {
     if (this.model.active) {
-      return this._generateQuestion();
+      return this._generateQuestion(this.model.askNextQuestion());
     } else {
       return this._generateIntro();
     }
   }
 
   handleStart() {
-    this.model.startNewGame();
+    this.model.quizInitialize();
+
+  }
+
+  handleSubmit(){
+    this.model.checkAnswer();
     this.model.update();
   }
 }
