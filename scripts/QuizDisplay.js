@@ -6,6 +6,8 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
     return {
       'click .start': 'handleStart',
       'click .next': 'handleSubmit',
+      'click .continue': 'handleContinue',
+      'click .playAgain': 'handlePlayAgain',
 
     };
   }
@@ -26,24 +28,42 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   _generateQuestion(questionObj) {
 
     console.log(questionObj);
-    return `
+    if(questionObj.ansChoices.length < 3){
+      return `
       <div>
         ${questionObj.text}
       </div>
          <form>
-        <input type="radio" role="button" class="js-answer" name="answerOption"/>
+        <input type="radio" role="button" class="js-answer" name="answerOption" id="answerOption1"/>
         <label for="answerOption1" title="text">${questionObj.ansChoices[0]}</label>
-        <input type="radio" role="button" class="js-answer" name="answerOption"/>
+        <input type="radio" role="button" class="js-answer" name="answerOption" id="answerOption2"/>
         <label for="answerOption2" title="text">${questionObj.ansChoices[1]}</label>
-        <input type="radio" role="button" class="js-answer" name="answerOption"/>
-        <label for="answerOption3" title="text">${questionObj.ansChoices[2]}</label>
-        <input type="radio" role="button" class="js-answer" name="answerOption"/>
-        <label for="answerOption4" title="text">${questionObj.ansChoices[3]}</label>
       <div>
       <button class='next'>Submit</button>
       </div> 
       </form>
     `;
+    } else {
+      return `
+        <div>
+          ${questionObj.text}
+        </div>
+           <form>
+          <input type="radio" role="button" class="js-answer" name="answerOption" id="answerOption1"/>
+          <label for="answerOption1" title="text">${questionObj.ansChoices[0]}</label>
+          <input type="radio" role="button" class="js-answer" name="answerOption" id="answerOption2"/>
+          <label for="answerOption2" title="text">${questionObj.ansChoices[1]}</label>
+          <input type="radio" role="button" class="js-answer" name="answerOption" id="answerOption3"/>
+          <label for="answerOption3" title="text">${questionObj.ansChoices[2]}</label>
+          <input type="radio" role="button" class="js-answer" name="answerOption" id="answerOption4"/>
+          <label for="answerOption4" title="text">${questionObj.ansChoices[3]}</label>
+        <div>
+        <button class='next'>Submit</button>
+        </div> 
+        </form>
+      `;
+    }
+
   }
 
   _generateGraded(gradedObj) {
@@ -58,7 +78,10 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
       The correct answer was:
       ${gradedObj.correctAns}
       </div>
-      `;
+      <div>
+      <button class='continue'>Continue</button>
+      </div> 
+`;
     }
     else {
       return `
@@ -75,29 +98,39 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
       The correct answer was:
       ${gradedObj.correctAns}
       </div>
+      <div>
+      <button class='continue'>Continue</button>
+      </div> 
       `;
     }
   }
 
-  _generateFinal(finalObj){
-    if (true){
+  _generateFinal(finalObj) {
+    if (finalObj) {
       return `
-      <div>
-      Good job!
-      </div>
-      <div>
-      Your final score was ${finalObj.score} out of 5!
-      That's a new high score!
-      `;
+    <div>
+    Good job!
+    </div>
+    <div>
+    Your final score was ${finalObj.score} out of 5!
+    That's a new high score!
+    <div>
+      <button class='playAgain'>Play Again</button>
+    </div> 
+    `;
     } else {
       return `
-      <div>
-      Good job!
-      </div>
-      <div>
-      Your final score was ${finalObj.score} out of 5!
-      </div>
-      `;
+    <div>
+    Good job!
+    </div>
+    <div>
+    Your final score was ${finalObj.score} out of 5!
+    Your current high score is ${finalObj.highScore}!
+    </div>
+    <div>
+      <button class='playAgain'>Play Again</button>
+    </div> 
+    `;
     }
   }
 
@@ -116,13 +149,22 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
 
   handleStart() {
     this.model.quizInitialize();
-
   }
 
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault();
     const text = $('input:checked + label').text();
     this.model.checkAnswer(text);
     this.model.update();
-  } 
+  }
+
+  handleContinue(){
+    // this.model.askNextQuestion();
+    // this.model.update();
+  }
+
+  handlePlayAgain(){
+    this.model.quizInitialize();
+  }
+
 }
