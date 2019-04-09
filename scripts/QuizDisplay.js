@@ -5,7 +5,8 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   getEvents() {
     return {
       'click .start': 'handleStart',
-      'click .next': 
+      'click .next':  'handleSubmit',
+      
     };
   }
 
@@ -23,6 +24,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   }
 
   _generateQuestion(questionObj) {
+
     console.log(questionObj);
     return `
       <div>
@@ -30,7 +32,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
       </div>
          <form>
         <input type="radio" role="button" class="js-answer" name="answerOption1"/>
-        <label for="answerOption1" title="text">           </label>
+        <label for="answerOption1" title="text">${questionObj.question}</label>
         <input type="radio" role="button" class="js-answer" name="answerOption2"/>
         <label for="answerOption2" title="text">           </label>
         <input type="radio" role="button" class="js-answer" name="answerOption3"/>
@@ -53,7 +55,12 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   }
 
   handleStart() {
-    this.model.startNewGame();
+    this.model.quizInitialize();
+
+  }
+
+  handleSubmit(){
+    this.model.checkAnswer();
     this.model.update();
   }
 }

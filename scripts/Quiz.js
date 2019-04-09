@@ -17,19 +17,15 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
     // Your Quiz model's constructor logic should go here. There is just examples below.
     this.active = false;
     this.questions = [{ id: 1, text: 'Question 1' }];
+    this.unasked = [];
+    this.asked = [];
   }
 
-  startNewGame() {
-    this.quizInitialize();
-  }
 
   quizInitialize() {
-    try {
-      this.toggleActive();
-      this.getUnaskedQuestions();
-    } catch (e) {
-      console.log(e);
-    }
+    this .toggleActive();
+    this.getUnaskedQuestions()
+      .catch (console.log);
   }
 
   toggleActive() {
@@ -39,25 +35,24 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
   getUnaskedQuestions() {
     return TriviaAPI.getQuestions()
       .then(questions => {
-        console.log(questions)
         questions.results.forEach((item,index) => {
           this.unasked.push(new Question(item.question, item.incorrect_answers, item.correct_answer, index+1));
         });
       })
       .then(() => {
-        this.questionController();
-      });
+        this.update();
+      })
 
     //this.unasked.push(...questions);
   }
 
-  questionController() {
-    while (this.unasked.length !== 0) {
-      this.askNextQuestion();
-      this.promptUser();
-    }
-    this.toggleActive();
-  }
+  // questionController() {
+  //   while (this.unasked.length !== 0) {
+  //    // this.askNextQuestion();
+  //     this.promptUser();
+  //   }
+  //   this.toggleActive();
+  // }
 
   askNextQuestion(){
     //CHANGE FOR RENDER
@@ -80,7 +75,7 @@ class Quiz extends Model {          // eslint-disable-line no-unused-vars
       text: currentQuestion.text,
       ansChoices: answerChoices,
       id: currentQuestion.Id,
-    }
+    };
   }
 
 }
