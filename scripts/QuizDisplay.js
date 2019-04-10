@@ -30,7 +30,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
     console.log(questionObj);
     if(questionObj.ansChoices.length < 3){
       return `
-      <div>
+      <div class="question">
         ${questionObj.text}
       </div>
          <form>
@@ -45,7 +45,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
     `;
     } else {
       return `
-        <div>
+        <div class="question">
           ${questionObj.text}
         </div>
            <form>
