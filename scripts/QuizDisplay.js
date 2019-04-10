@@ -15,7 +15,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   _generateIntro() {
     return `
       <div>
-        <p>
+        <p class='welcome'>
           Welcome to the Trivia Quiz
         </p>
       </div>
@@ -26,8 +26,6 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   }
 
   _generateQuestion(questionObj) {
-
-    console.log(questionObj);
     if(questionObj.ansChoices.length < 3){
       return `
       <div class='question'>
@@ -36,6 +34,7 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
          <form>
         <input checked type="radio" role="button" class="js-answer" name="answerOption" id="answerOption1"/>
         <label for="answerOption1" title="text">${questionObj.ansChoices[0]}</label>
+        <br>
         <input type="radio" role="button" class="js-answer" name="answerOption" id="answerOption2"/>
         <label for="answerOption2" title="text">${questionObj.ansChoices[1]}</label>
       <div>
@@ -72,14 +71,16 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
   _generateGraded(gradedObj) {
     if (gradedObj.correct) {
       return `
-      <div>
+      <div class='question'>
         ${gradedObj.text}
       </div>
-      <div>
+      <div class='results'>
+      <div class='resultResponse'>
       You got it!</div>
-      <div>
+      <div class='resultResponse'>
       The correct answer was:
       ${gradedObj.correctAns}
+      </div>
       </div>
       <div>
       <button class='continue'>Continue</button>
@@ -88,18 +89,20 @@ class QuizDisplay extends Renderer {    // eslint-disable-line no-unused-vars
     }
     else {
       return `
-      <div>
+      <div class='question'>
         ${gradedObj.text}
       </div>
-      <div>
+      <div class='results'>
+      <div class='resultResponse'>
       Sorry, that's incorrect.</div>
-      <div>
+      <div class='resultResponse'>
       You answered: 
       ${gradedObj.userAns}
       </div>
-      <div>
+      <div class='resultResponse'>
       The correct answer was:
       ${gradedObj.correctAns}
+      </div>
       </div>
       <div>
       <button class='continue'>Continue</button>

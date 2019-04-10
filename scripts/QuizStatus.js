@@ -3,7 +3,7 @@
 
 class QuizStatus extends Renderer {    // eslint-disable-line no-unused-vars
   template() {
-    let progressView = this.model.currentQuestionNum === 'inactive' ? 'inactive' :
+    let progressView = this.model.currentQuestionNum === 'inactive' ? 'Inactive' :
       `${ this.model.currentQuestionNum } of 5`;
     return `
       <span>
